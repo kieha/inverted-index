@@ -48,7 +48,6 @@ function Index() {
       		});
       	}
       });
-      console.log(self.invertedIndex);
       return self.invertedIndex;
     });
   };

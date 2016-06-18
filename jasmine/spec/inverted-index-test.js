@@ -33,5 +33,11 @@ describe("Inverted Index Tests", function () {
     it("checks if getIndex method returns an object", function () {
       expect(typeof index.index_).toBe('object');
     });
+
+    it("checks if the index created is accurate", function() {
+      expect(index.index_.alice).toEqual([0]);
+      expect(index.index_.ring).toEqual([1]);
+      expect(index.index_.njerrywerry).toEqual(undefined);
+    });
   });
 });

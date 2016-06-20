@@ -42,8 +42,9 @@ function Index() {
               if(currentValue.indexOf(index) === -1) {
                 currentValue.push(index);
               }
+            } else {
+              self.invertedIndex[word] = [index];
             }
-            else { self.invertedIndex[word] = [index]; }
           }
     		});
     	}
@@ -52,20 +53,37 @@ function Index() {
   };
 
   this.searchIndex = function(searchTerms) {
+    var self = this;
+    // initialize array to store seatch results
     searchResults = [];
-    for (var i = 0; i < arguments.length; i++) {
-      if(arguments[i] in this.invertedIndex === true) {
-        console.log(arguments[i]);
-        if(this.invertedIndex[arguments[i]].length === 1) {
-          searchResults.push(this.invertedIndex[arguments[i]][0]);
+
+    // if searchTerms is an array
+    if(Array.isArray(searchTerms)) {
+      searchTerms.forEach(function(term) {
+        if(term in self.invertedIndex === true) {
+          if(self.invertedIndex[term].length === 1) {
+            searchResults.push(self.invertedIndex[term][0]);
+          } else {
+            searchResults.push(self.invertedIndex[term]);
+          }
         } else {
-          searchResults.push(this.invertedIndex[arguments[i]]);
+          searchResults.push(-1);
         }
-      } else {
-        searchResults.push(-1);
+      });
+    } else {
+      // if searchTerms is a number of arguments
+      for (var i = 0; i < arguments.length; i++) {
+        if(arguments[i] in this.invertedIndex === true) {
+          if(this.invertedIndex[arguments[i]].length === 1) {
+            searchResults.push(this.invertedIndex[arguments[i]][0]);
+          } else {
+            searchResults.push(this.invertedIndex[arguments[i]]);
+          }
+        } else {
+          searchResults.push(-1);
+        }
       }
-    }
-    console.log(searchResults);
+  }
     return searchResults;
   };
 }

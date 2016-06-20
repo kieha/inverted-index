@@ -60,5 +60,11 @@ describe("Inverted Index Tests", function () {
       expect(index.searchIndex('njeri', 'mother')).not.toContain(1);
       expect(index.searchIndex('njeri', 'mother')).toEqual([-1, -1]);
     });
+
+    it("checks if searchIndex caters for an array as an argument", function() {
+      expect(index.searchIndex(['alice', 'wonderland'])).toEqual([0, 0]);
+      expect(index.searchIndex(['lord', 'alliance'])).toEqual([1, 1]);
+      expect(index.searchIndex(['njeri', 'kieha'])).toContain(-1);
+    });
   });
 });

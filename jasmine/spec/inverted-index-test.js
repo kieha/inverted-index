@@ -5,10 +5,8 @@ describe("Inverted Index Tests", function () {
   beforeEach(function(done) {
     index.readFile('/books.json').then(function(data) {
       index.results = data;
-      index.getIndex().then(function(stuff) {
-        index.index_ = stuff;
-        done();
-      });
+      index.getIndex();
+      done();
     });
   });
 
@@ -22,22 +20,45 @@ describe("Inverted Index Tests", function () {
       expect(index.fileContents).not.toBeUndefined();
     });
 
-    // it("should check if the input file contains an array of objects", function() {
-    //   expect(Array.isArray(index.index_)).toBe(true);
-    //   expect(index.index_[0] instanceof Object).toBe(true);
-    //   expect(index.index_[1] instanceof Object).toBe(true);
-    // });
+    it("should check if the input file contains an array of objects", function() {
+      expect(Array.isArray(index.fileContents)).toBe(true);
+      expect(index.fileContents[0] instanceof Object).toBe(true);
+      expect(index.fileContents[1] instanceof Object).toBe(true);
+    });
   });
 
-  describe("Populate Index", function () {
+  describe("Populate Index", function() {
     it("checks if getIndex method returns an object", function () {
-      expect(typeof index.index_).toBe('object');
+      expect(typeof index.getIndex()).toBe('object');
     });
 
     it("checks if the index created is accurate", function() {
-      expect(index.index_.alice).toEqual([0]);
-      expect(index.index_.ring).toEqual([1]);
-      expect(index.index_.njerrywerry).toEqual(undefined);
+      expect(index.getIndex().alice).toEqual([0]);
+      expect(index.getIndex().ring).toEqual([1]);
+      expect(index.getIndex().njerrywerry).toEqual(undefined);
+    });
+  });
+
+  describe("Search Index", function() {
+    it("checks if searchIndex method returns an array", function() {
+      expect(Array.isArray(index.searchIndex('alice'))).toBe(true);
+    });
+
+    it("checks if the results of the search are correct", function() {
+      expect(index.searchIndex('alice')).toContain(0);
+      expect(index.searchIndex('alliance')).toContain(1);
+      expect(index.searchIndex('njeri')).toEqual([-1]);
+    });
+
+    it("checks if searchIndex caters for multiple arguments", function() {
+      // words that are in the index result in either 0 or 1
+      expect(index.searchIndex('alice', 'wonderland')).toEqual([0, 0]);
+      expect(index.searchIndex('alice', 'alliance')).toEqual([0, 1]);
+      expect(index.searchIndex('alice', 'alliance', 'wonderland')).toEqual([0, 1, 0]);
+
+      // words not in the index result in -1
+      expect(index.searchIndex('njeri', 'mother')).not.toContain(1);
+      expect(index.searchIndex('njeri', 'mother')).toEqual([-1, -1]);
     });
   });
 });

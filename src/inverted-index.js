@@ -2,6 +2,12 @@
 function Index() {
   this.fileContents = undefined;
   this.invertedIndex = {};
+  // stop words to ignore on index creation
+  this.stopWords = ["a", "an", "and", "as", "at", "but", "by", "each", "every", "for",
+      "from", "her", "his", "in", "into", "its", "like", "my", "no", "nor",
+      "of", "off", "on", "onto", "or", "our", "out", "outside", "over", "past",
+      "since", "so", "some", "than", "that", "the", "their", "this", "to", "up", "with"
+    ];
 
   this.readFile = function(filepath) {
     var self = this;
@@ -23,12 +29,6 @@ function Index() {
 
   this.getIndex = function() {
     var self = this;
-    // stop words to ignore on index creation
-    var stopWords = ["a", "an", "and", "as", "at", "but", "by", "each", "every", "for",
-        "from", "her", "his", "in", "into", "its", "like", "my", "no", "nor",
-        "of", "off", "on", "onto", "or", "our", "out", "outside", "over", "past",
-        "since", "so", "some", "than", "that", "the", "their", "this", "to", "up", "with"
-      ];
 
     this.fileContents.forEach(function(element, index) {
     	for(var value in element) {
@@ -36,7 +36,7 @@ function Index() {
         (/[.,\/#!$%\^&\*;:{}=\-_`~()]+/gi, " ").replace(/\s{2,}/g, " ").trim().split(" ");
     		strFileContents.forEach(function(word) {
           // search for and exclude stop words from index creation
-          if (stopWords.indexOf(word) === -1) {
+          if (self.stopWords.indexOf(word) === -1) {
             if (self.invertedIndex[word]) {
               var currentValue = self.invertedIndex[word];
               if(currentValue.indexOf(index) === -1) {
@@ -44,7 +44,7 @@ function Index() {
               }
             } else {
               self.invertedIndex[word] = [index];
-            }
+             }
           }
     		});
     	}
@@ -54,12 +54,21 @@ function Index() {
 
   this.searchIndex = function(searchTerms) {
     var self = this;
-    // initialize array to store seatch results
-    searchResults = [];
+    var terms = [];
+    var searchResults = [];
 
-    // if searchTerms is an array
-    if(Array.isArray(searchTerms)) {
-      searchTerms.forEach(function(term) {
+    // convert all format of input into an array
+    if(!Array.isArray(searchTerms)) {
+        for(var key in arguments) {
+          terms.push(arguments[key]);
+        }
+    } else {
+      terms = searchTerms;
+    }
+
+    terms.forEach(function(term) {
+      term = term.toLowerCase();
+      if(self.stopWords.indexOf(term) === -1) {
         if(term in self.invertedIndex === true) {
           if(self.invertedIndex[term].length === 1) {
             searchResults.push(self.invertedIndex[term][0]);
@@ -69,21 +78,8 @@ function Index() {
         } else {
           searchResults.push(-1);
         }
-      });
-    } else {
-      // if searchTerms is a number of arguments
-      for (var i = 0; i < arguments.length; i++) {
-        if(arguments[i] in this.invertedIndex === true) {
-          if(this.invertedIndex[arguments[i]].length === 1) {
-            searchResults.push(this.invertedIndex[arguments[i]][0]);
-          } else {
-            searchResults.push(this.invertedIndex[arguments[i]]);
-          }
-        } else {
-          searchResults.push(-1);
-        }
       }
-  }
+    });
     return searchResults;
   };
 }

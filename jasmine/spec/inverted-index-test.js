@@ -66,5 +66,12 @@ describe("Inverted Index Tests", function () {
       expect(index.searchIndex(['lord', 'alliance'])).toEqual([1, 1]);
       expect(index.searchIndex(['njeri', 'kieha'])).toContain(-1);
     });
+
+    it("caters for case sensitivity", function() {
+      expect(index.searchIndex('Alice')).toContain(0);
+      expect(index.searchIndex('Alice')).toEqual([0]);
+      expect(index.searchIndex(['Alice', 'Alliance'])).toContain(1);
+      expect(index.searchIndex(['Alice', 'Alliance'])).toEqual([0, 1]);
+    });
   });
 });

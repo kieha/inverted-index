@@ -57,25 +57,28 @@ describe("Inverted Index Tests", function () {
       expect(index.searchIndex('alice', 'alliance', 'wonderland')).toEqual([0, 1, 0]);
 
       // words not in the index result in -1
-      expect(index.searchIndex('njeri', 'mother')).not.toContain(1);
       expect(index.searchIndex('njeri', 'mother')).toEqual([-1, -1]);
 
       // stop words are ignored
       expect(index.searchIndex('alice', 'in', 'wonderland')).toEqual([0, 0]);
       expect(index.searchIndex('The', 'Lord', 'of', 'the', 'Rings')).toEqual([1, 1]);
+      expect(index.searchIndex(['The', 'Lord', 'of', 'the', 'Rings'])).toEqual([1, 1]);
     });
 
     it("checks if searchIndex caters for an array as an argument", function () {
       expect(index.searchIndex(['alice', 'wonderland'])).toEqual([0, 0]);
       expect(index.searchIndex(['lord', 'alliance'])).toEqual([1, 1]);
-      expect(index.searchIndex(['njeri', 'kieha'])).toContain(-1);
+      expect(index.searchIndex(['njeri', 'lord', 'kieha'])).toContain(-1);
     });
 
     it("caters for case sensitivity", function () {
-      expect(index.searchIndex('Alice')).toContain(0);
       expect(index.searchIndex('Alice')).toEqual([0]);
-      expect(index.searchIndex(['Alice', 'Alliance'])).toContain(1);
       expect(index.searchIndex(['Alice', 'Alliance'])).toEqual([0, 1]);
+    });
+
+    it("caters for words that occur in both documents", function () {
+      expect(index.searchIndex('alice', 'in', 'new', 'wonderland')).toEqual([0, [0, 1], 0]);
+      expect(index.searchIndex('alice', 'in', 'new', 'lord')).toEqual([0, [0, 1], 1]);
     });
   });
 });

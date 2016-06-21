@@ -32,7 +32,9 @@ function Index() {
 
     this.fileContents.forEach(function (element, index) {
       for (var value in element) {
-        var strFileContents = element[value].toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]+/gi, " ").replace(/\s{2,}/g, " ").trim().split(" ");
+        var strFileContents = element[value].toLowerCase()
+          .replace(/\W/gi, " ").replace(/\s{2,}/g, " ")
+          .trim().split(" ");
         strFileContents.forEach(function (word) {
           // search for and exclude stop words from index creation
           if (self.stopWords.indexOf(word) === -1) {
@@ -79,7 +81,6 @@ function Index() {
         }
       }
     });
-    console.log(searchResults);
     return searchResults;
   };
 }

@@ -1,49 +1,91 @@
 // Index object
 function Index() {
-  var book = [
-    {
-      "title": "Alice in Wonderland",
-      "text": "Alice falls into a rabbit hole and enters a world full of imagination."
-    },
+  this.fileContents = undefined;
+  this.invertedIndex = {};
 
-    {
-      "title": "The Lord of the Rings: The Fellowship of the Ring.",
-      "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
-    }
+  // stop words to ignore on index creation
+  this.stopWords = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'each', 'every',
+    'for', 'from', 'her', 'his', 'in', 'into', 'its', 'like', 'my', 'no', 'nor',
+    'of', 'off', 'on', 'onto', 'or', 'our', 'out', 'outside', 'over', 'past',
+    'since', 'so', 'some', 'than', 'that', 'the', 'their', 'this', 'to', 'up',
+    'with'
   ];
 
-  this.fileContents = [];
-  this.index_ = {};
-  // this.createIndex = function(filepath) {
-  //   fetch(filepath)
-  //     .then(function(response) {
-  //       response.json();
-  //       return response.json();
-  //     });
-  // };
+  this.readFile = function (filepath) {
+    var self = this;
+    return fetch(filepath)
+      .then(function (response) {
+        return response.text();
+      }).then(function (response) {
+        try {
+          self.fileContents = JSON.parse(response);
+        } catch (e) {
+          console.log(e);
+        }
 
-  this.getIndex = function() {
-     var self = this;
-     for (var i = 0; i < book.length; i++) {
-       var obj = book[i];
-       Object.keys(obj).map(function(key) {
-         self.fileContents.push(obj[key]);
-       });
-       strFileContents = this.fileContents.toString().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]+/gi, " ").replace(/\s{2,}/g, " ").trim().split(" ");
-      //  console.log(i);
-       for (var x = 0; x < strFileContents.length; x++) {
-         this.index_[strFileContents[x]] = i;
+        return response;
+      }).catch(function (err) {
+        console.log('parsing failed', err);
+        throw err;
+      });
+  };
 
-       }
-       console.log(this.index_);
-     }
-    //  console.log(this.index_);
-    //  strFileContents = this.fileContents.toString().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]+/gi, " ").replace(/\s{2,}/g, " ").trim().split(" ");
+  this.getIndex = function () {
+    var self = this;
 
-    //  var stopWords = ["of", "the", "a", "an", "and", "but", "to", "for"];
-    //  reg = "\\b" + stopWords.toString().replace(/,/g, "\\b|\\b") + "\\b";
+    this.fileContents.forEach(function (book, index) {
+      for (var key in book) {
+        var wordArray = book[key].toLowerCase()
+          .replace(/\W+/g, ' ').trim().split(' ');
+        wordArray.forEach(function (word) {
+          // search for and exclude stop words from index creation
+          if (self.stopWords.indexOf(word) === -1) {
+            if (self.invertedIndex[word]) {
+              var currentValue = self.invertedIndex[word];
+              if (currentValue.indexOf(index) === -1) {
+                currentValue.push(index);
+              }
+            } else {
+              self.invertedIndex[word] = [index];
+            }
+          }
+        });
+      }
+    });
+
+    return this.invertedIndex;
+  };
+
+  this.searchIndex = function (searchTerms) {
+    var self = this;
+    var terms = [];
+    var searchResults = [];
+
+    // convert all format of input into an array
+    if (!Array.isArray(searchTerms)) {
+      for (var key in arguments) {
+        terms.push(arguments[key]);
+      }
+    } else {
+      terms = searchTerms;
+    }
+
+    terms.forEach(function (term) {
+      term = term.toLowerCase();
+
+      // ignore stop words from being included in search result
+      if (self.stopWords.indexOf(term) === -1) {
+        if (term in self.invertedIndex === true) {
+          if (self.invertedIndex[term].length === 1) {
+            searchResults.push([term, self.invertedIndex[term][0]]);
+          } else {
+            searchResults.push([term, self.invertedIndex[term]]);
+          }
+        } else {
+          searchResults.push([term, -1]);
+        }
+      }
+    });
+    return searchResults;
   };
 }
-
-var newind = new Index();
-newind.getIndex();

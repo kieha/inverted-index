@@ -40,6 +40,11 @@ function Index() {
         wordArray.forEach(function (word) {
           // search for and exclude stop words from index creation
           if (self.stopWords.indexOf(word) === -1) {
+
+            /* if a word occurs more than once in the same document, only push
+             its index once. i.e if 'alice' occurs thrice in document 0, the
+             result should be {'alice': [0]} 
+            */
             if (self.invertedIndex[word]) {
               var currentValue = self.invertedIndex[word];
               if (currentValue.indexOf(index) === -1) {

@@ -37,6 +37,6 @@
   ],
   "quotmark": true,
   "trailing": true,
-  "undef": true,
-  "unused": true
+  "undef": false,
+  "unused": false
 }

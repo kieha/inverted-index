@@ -1,5 +1,25 @@
+var index = new Index();
+
+describe('Validate File Existance and Validity', function () {
+  it('throws error for non existing files', function (done) {
+    index.readFile('/non-existent.json')
+      .catch(function (err) {
+        expect(err instanceof Error).toBeTruthy();
+        expect(err.message).toBe('File not found');
+        done();
+      });
+  });
+
+  it('throws an error for invalid json files', function (done) {
+    index.readFile('/invalid-json.json')
+      .catch(function (err) {
+        expect(err instanceof SyntaxError).toBeTruthy();
+        done();
+      });
+  });
+});
+
 describe('Inverted Index Tests', function () {
-  var index = new Index();
 
   // Load json file and create index object before carrying out any test
   beforeEach(function (done) {

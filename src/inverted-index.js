@@ -15,18 +15,16 @@ function Index() {
     var self = this;
     return fetch(filepath)
       .then(function (response) {
-        return response.text();
-      }).then(function (response) {
-        try {
-          self.fileContents = JSON.parse(response);
-        } catch (e) {
-          console.log(e);
+        if (!response.ok) {
+          throw Error(response.statusText);
         }
 
+        return response.text();
+      }).then(function (response) {
+        self.fileContents = JSON.parse(response);
         return response;
       }).catch(function (err) {
-        console.log('parsing failed', err);
-        throw err;
+        return Promise.reject(err);
       });
   };
 
@@ -37,13 +35,14 @@ function Index() {
       for (var key in book) {
         var wordArray = book[key].toLowerCase()
           .replace(/\W+/g, ' ').trim().split(' ');
+
         wordArray.forEach(function (word) {
           // search for and exclude stop words from index creation
           if (self.stopWords.indexOf(word) === -1) {
 
             /* if a word occurs more than once in the same document, only push
              its index once. i.e if 'alice' occurs thrice in document 0, the
-             result should be {'alice': [0]} 
+             result should be {'alice': [0]}
             */
             if (self.invertedIndex[word]) {
               var currentValue = self.invertedIndex[word];

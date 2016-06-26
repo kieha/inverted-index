@@ -1,6 +1,6 @@
 # inverted-index
 
-[![Build Status](https://travis-ci.org/andela-skieha/inverted-index.svg?branch=master)](https://travis-ci.org/andela-skieha/inverted-index)
+[![Coverage Status](https://coveralls.io/repos/github/andela-skieha/inverted-index/badge.svg?branch=master)](https://coveralls.io/github/andela-skieha/inverted-index?branch=master)  [![Build Status](https://travis-ci.org/andela-skieha/inverted-index.svg?branch=master)](https://travis-ci.org/andela-skieha/inverted-index)
 
 ## Checkpoint Explanation
 For further explanation of what an inverted index is, visit the following link: [https://www.elastic.co/guide/en/elasticsearch/guide/current/inverted-index.html](https://www.elastic.co/guide/en/elasticsearch/guide/current/inverted-index.html)

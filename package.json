@@ -1,0 +1,27 @@
+{
+  "name": "inverted-index",
+  "version": "1.0.0",
+  "description": "Inverted index module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-skieha/inverted-index.git"
+  },
+  "author": "Sylvia Kieha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-skieha/inverted-index/issues"
+  },
+  "homepage": "https://github.com/andela-skieha/inverted-index#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.1.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-safari-launcher": "^1.0.0"
+  }
+}

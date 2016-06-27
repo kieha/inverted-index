@@ -3,9 +3,14 @@ node_js:
     - "node"
 script: node_modules/karma/bin/karma start my.conf.js --single-run
 before_install:
-    - export CHROME_BIN=chromium-browser
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
 before_script:
+    - wget -O FirefoxSetup.exe "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
+    - tar xjf firefox-47.0.tar.bz2
+    - sudo rm -r /opt/firefox
+    - sudo mv firefox /opt/firefox47
+    - sudo mv /usr/bin/firefox /usr/bin/firefox-old
+    - sudo ln -s /opt/firefox47/firefox /usr/bin/firefox
     - npm install
     - node server.js &

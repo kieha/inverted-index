@@ -13,6 +13,7 @@ function Index() {
 
   this.readFile = function (filepath) {
     var self = this;
+    filepath = 'http://localhost:8080' + filepath;
     return fetch(filepath)
       .then(function (response) {
         if (!response.ok) {
@@ -60,10 +61,28 @@ function Index() {
     return this.invertedIndex;
   };
 
-  this.searchIndex = function (searchTerms) {
+  this.populateSearch = function (terms) {
     var self = this;
-    var terms = [];
-    var searchResults = [];
+    this.searchResults = [];
+
+    terms.forEach(function (term) {
+      term = term.toLowerCase();
+
+      // ignore stop words from being included in search result
+      if (self.stopWords.indexOf(term) === -1) {
+        if (term in self.invertedIndex === true) {
+          self.searchResults.push([term, self.invertedIndex[term]]);
+        } else {
+          self.searchResults.push([term, -1]);
+        }
+      }
+    });
+
+  };
+
+  this.searchIndex = function (searchTerms) {
+    var self = this,
+      terms = [];
 
     // convert all format of input into an array
     if (!Array.isArray(searchTerms)) {
@@ -73,23 +92,8 @@ function Index() {
     } else {
       terms = searchTerms;
     }
+    this.populateSearch(terms);
 
-    terms.forEach(function (term) {
-      term = term.toLowerCase();
-
-      // ignore stop words from being included in search result
-      if (self.stopWords.indexOf(term) === -1) {
-        if (term in self.invertedIndex === true) {
-          if (self.invertedIndex[term].length === 1) {
-            searchResults.push([term, self.invertedIndex[term][0]]);
-          } else {
-            searchResults.push([term, self.invertedIndex[term]]);
-          }
-        } else {
-          searchResults.push([term, -1]);
-        }
-      }
-    });
-    return searchResults;
+    return self.searchResults;
   };
 }

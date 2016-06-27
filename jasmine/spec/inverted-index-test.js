@@ -5,7 +5,7 @@ describe('Validate File Existance and Validity', function () {
     index.readFile('/non-existent.json')
       .catch(function (err) {
         expect(err instanceof Error).toBeTruthy();
-        expect(err.message).toBe('File not found');
+        expect(err.message).toBe('Not Found');
         done();
       });
   });
@@ -66,10 +66,10 @@ describe('Inverted Index Tests', function () {
 
     it('checks if the results of the search are correct', function () {
       expect(index.searchIndex('alice')).toEqual([
-        ['alice', 0]
+        ['alice', [0]]
       ]);
       expect(index.searchIndex('alliance')).toEqual([
-        ['alliance', 1]
+        ['alliance', [1]]
       ]);
       expect(index.searchIndex('njeri')).toEqual([
         ['njeri', -1]
@@ -77,22 +77,22 @@ describe('Inverted Index Tests', function () {
     });
 
     it('checks if searchIndex caters for multiple arguments', function () {
-      // words that are in the index result in either 0 or 1
+      // words that are in the index result in either [0] or [1]
       expect(index.searchIndex('alice', 'wonderland')).toEqual([
-        ['alice', 0],
-        ['wonderland', 0]
+        ['alice', [0]],
+        ['wonderland', [0]]
       ]);
       expect(index.searchIndex('alice', 'alliance')).toEqual([
-        ['alice', 0],
-        ['alliance', 1]
+        ['alice', [0]],
+        ['alliance', [1]]
       ]);
       expect(index.searchIndex('alice', 'alliance', 'wonderland')).toEqual([
-        ['alice', 0],
-        ['alliance', 1],
-        ['wonderland', 0]
+        ['alice', [0]],
+        ['alliance', [1]],
+        ['wonderland', [0]]
       ]);
 
-      // words not in the index result in -1
+      // words not in the index result in -[1]
       expect(index.searchIndex('njeri', 'mother')).toEqual([
         ['njeri', -1],
         ['mother', -1]
@@ -100,27 +100,27 @@ describe('Inverted Index Tests', function () {
 
       // stop words are ignored
       expect(index.searchIndex('alice', 'in', 'wonderland')).toEqual([
-        ['alice', 0],
-        ['wonderland', 0]
+        ['alice', [0]],
+        ['wonderland', [0]]
       ]);
       expect(index.searchIndex('The', 'Lord', 'of', 'the', 'Rings')).toEqual([
-        ['lord', 1],
-        ['rings', 1]
+        ['lord', [1]],
+        ['rings', [1]]
       ]);
       expect(index.searchIndex(['The', 'Lord', 'of', 'the', 'Rings'])).toEqual([
-        ['lord', 1],
-        ['rings', 1]
+        ['lord', [1]],
+        ['rings', [1]]
       ]);
     });
 
     it('checks if searchIndex caters for an array as an argument', function () {
       expect(index.searchIndex(['alice', 'wonderland'])).toEqual([
-        ['alice', 0],
-        ['wonderland', 0]
+        ['alice', [0]],
+        ['wonderland', [0]]
       ]);
       expect(index.searchIndex(['lord', 'alliance'])).toEqual([
-        ['lord', 1],
-        ['alliance', 1]
+        ['lord', [1]],
+        ['alliance', [1]]
       ]);
       expect(index.searchIndex(['njeri', 'lord', 'kieha']))
         .toContain(['njeri', -1]);
@@ -128,24 +128,24 @@ describe('Inverted Index Tests', function () {
 
     it('caters for case sensitivity', function () {
       expect(index.searchIndex('Alice')).toEqual([
-        ['alice', 0]
+        ['alice', [0]]
       ]);
       expect(index.searchIndex(['Alice', 'Alliance'])).toEqual([
-        ['alice', 0],
-        ['alliance', 1]
+        ['alice', [0]],
+        ['alliance', [1]]
       ]);
     });
 
     it('caters for words that occur in both documents', function () {
       expect(index.searchIndex('alice', 'in', 'new', 'wonderland')).toEqual([
-        ['alice', 0],
+        ['alice', [0]],
         ['new', [0, 1]],
-        ['wonderland', 0]
+        ['wonderland', [0]]
       ]);
       expect(index.searchIndex('alice', 'in', 'new', 'lord')).toEqual([
-        ['alice', 0],
+        ['alice', [0]],
         ['new', [0, 1]],
-        ['lord', 1]
+        ['lord', [1]]
       ]);
     });
   });

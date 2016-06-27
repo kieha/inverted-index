@@ -6,6 +6,10 @@ before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
 before_script:
-    - sudo apt-get install firefox
+    - wget https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/42.0/linux-x86_64/en-US/firefox-42.0.tar.bz2
+    - tar -xjvf firefox-42.0.tar.bz2
+    - sudo rm -rf /opt/firefox*
+    - sudo mv firefox /opt/firefox
+    - sudo ln -sf /opt/firefox/firefox /usr/bin/firefox
     - npm install
     - node server.js &

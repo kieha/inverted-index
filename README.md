@@ -1,5 +1,6 @@
 # inverted-index
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/97ec4fb5b9784899af893a55a078f9ca)](https://www.codacy.com/app/sylvia-kieha/inverted-index?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-skieha/inverted-index&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/andela-skieha/inverted-index/badge.svg?branch=master)](https://coveralls.io/github/andela-skieha/inverted-index?branch=master)  [![Build Status](https://travis-ci.org/andela-skieha/inverted-index.svg?branch=master)](https://travis-ci.org/andela-skieha/inverted-index)
 
 ## Checkpoint Explanation

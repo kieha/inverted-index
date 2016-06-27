@@ -15,9 +15,9 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'books.json',
-      'jasmine/spec/*.js',
-      'src/*.js'
+      './src/*.js',
+      './books.json',
+      './jasmine/spec/*.js'
     ],
 
 

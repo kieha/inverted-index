@@ -6,11 +6,9 @@ before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
 before_script:
-    - wget -O FirefoxSetup.exe "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
-    - tar xjf firefox-47.0.tar.bz2
-    - sudo rm -r /opt/firefox
-    - sudo mv firefox /opt/firefox47
-    - sudo mv /usr/bin/firefox /usr/bin/firefox-old
-    - sudo ln -s /opt/firefox47/firefox /usr/bin/firefox
+    - cd usr/local
+    - wget http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/46.0.1/linux-x86_64/en-US/firefox-46.0.1.tar.bz2
+    - tar xvjf firefox-46.0.1.tar.bz2
+    - sudo ln -s /usr/local/firefox/firefox /usr/bin/firefox
     - npm install
     - node server.js &

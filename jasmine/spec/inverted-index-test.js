@@ -5,7 +5,7 @@ describe('Validate File Existance and Validity', function () {
     index.readFile('/non-existent.json')
       .catch(function (err) {
         expect(err instanceof Error).toBeTruthy();
-        expect(err.message).toBe('Not Found');
+        expect(err).toEqual(jasmine.any(Error));
         done();
       });
   });

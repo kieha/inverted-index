@@ -34,27 +34,27 @@ function Index() {
 
     this.fileContents.forEach(function (book, index) {
       for (var key in book) {
-        var wordArray = book[key].toLowerCase()
+        wordArray = book[key].toLowerCase()
           .replace(/\W+/g, ' ').trim().split(' ');
 
-        wordArray.forEach(function (word) {
+        for (var word = 0; word < wordArray.length; word++) {
           // search for and exclude stop words from index creation
-          if (self.stopWords.indexOf(word) === -1) {
+          if (self.stopWords.indexOf(wordArray[word]) === -1) {
 
             /* if a word occurs more than once in the same document, only push
-             its index once. i.e if 'alice' occurs thrice in document 0, the
-             result should be {'alice': [0]}
+            its index once. i.e if 'alice' occurs thrice in document 0, the
+            result should be {'alice': [0]}
             */
-            if (self.invertedIndex[word]) {
-              var currentValue = self.invertedIndex[word];
+            if (self.invertedIndex[wordArray[word]]) {
+              var currentValue = self.invertedIndex[wordArray[word]];
               if (currentValue.indexOf(index) === -1) {
                 currentValue.push(index);
               }
             } else {
-              self.invertedIndex[word] = [index];
+              self.invertedIndex[wordArray[word]] = [index];
             }
           }
-        });
+        }
       }
     });
 

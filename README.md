@@ -21,9 +21,9 @@ This method takes in either a word(s) or an array of words as a search term, and
 
 
 ## Running The Tests
-Since Chrome cannot load a JSON file while reading a HTML file loaded directly to the browser as a local file, the HTML file has to be loaded from a web server. So from your terminal, type the following commmand to start up the python server:
+Since Chrome cannot load a JSON file while reading a HTML file loaded directly to the browser as a local file, the HTML file has to be loaded from a web server. So from your terminal, at the root of the project, type the following commmand to start up the static server:
 
 ```
-$ python -m SimpleHTTPServer 3000
+$ node server.js
 ```
-Then visit [http://localhost:3000/jasmine/SpecRunner.html](http://localhost:3000/jasmine/SpecRunner.html) on your browser, and run the rests.
+Then visit [http://localhost:8080/jasmine/SpecRunner.html](http://localhost:8080/jasmine/SpecRunner.html) on your browser, and run the rests.

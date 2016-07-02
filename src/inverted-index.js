@@ -11,10 +11,9 @@ function Index() {
     'with'
   ];
 
-  this.readFile = function (filepath) {
+  this.readFile = function (fileUrl) {
     var self = this;
-    filepath = 'http://localhost:8080' + filepath;
-    return fetch(filepath)
+    return fetch(fileUrl)
       .then(function (response) {
         if (!response.ok) {
           throw Error(response.statusText);

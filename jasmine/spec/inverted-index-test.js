@@ -1,8 +1,9 @@
 var index = new Index();
+var serverHostUrl = 'http://localhost:8080';
 
 describe('Validate File Existance and Validity', function () {
   it('throws error for non existing files', function (done) {
-    index.readFile('/non-existent.json')
+    index.readFile(serverHostUrl + '/non-existent.json')
       .catch(function (err) {
         expect(err instanceof Error).toBeTruthy();
         expect(err).toEqual(jasmine.any(Error));
@@ -11,7 +12,7 @@ describe('Validate File Existance and Validity', function () {
   });
 
   it('throws an error for invalid json files', function (done) {
-    index.readFile('/invalid-json.json')
+    index.readFile(serverHostUrl + '/invalid-json.json')
       .catch(function (err) {
         expect(err instanceof SyntaxError).toBeTruthy();
         done();
@@ -23,7 +24,7 @@ describe('Inverted Index Tests', function () {
 
   // Load json file and create index object before carrying out any test
   beforeEach(function (done) {
-    index.readFile('/books.json').then(function (data) {
+    index.readFile(serverHostUrl + '/books.json').then(function (data) {
       index.results = data;
       index.getIndex();
       done();

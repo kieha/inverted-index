@@ -4,7 +4,7 @@
   "description": "Inverted index module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start my.conf.js --single-run"
   },
   "repository": {
     "type": "git",
@@ -17,15 +17,17 @@
   },
   "homepage": "https://github.com/andela-skieha/inverted-index#readme",
   "devDependencies": {
+    "istanbul": "^0.4.4",
     "jasmine-core": "^2.4.1",
     "karma": "^1.1.0",
     "karma-chrome-launcher": "^1.0.1",
+    "karma-coverage": "^1.1.0",
+    "karma-coveralls": "^1.1.2",
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-safari-launcher": "^1.0.0"
   },
   "dependencies": {
-    "codacy-coverage": "^1.1.3",
     "node-static": "^0.7.7"
   }
 }
